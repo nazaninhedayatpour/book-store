@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>
+        Delete Review
+    </title>
+</head>
+
+<body>
+
+    <h1>
+        Delete Review
+    </h1>
+
+    <p>
+        Are you sure you want to delete your review?
+    </p>
+
+    <p>
+        "{{ review.comment }}"
+    </p>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <button type="submit">
+            Yes, Delete
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{% url 'book_detail' review.book.pk %}">
+        Cancel
+    </a>
+
+</body>
+
+</html>

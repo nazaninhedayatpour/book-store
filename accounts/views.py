@@ -11,7 +11,7 @@ def signup_view(request):
         if User.objects.filter(username=username).exists():
             return render(
                 request,
-                "accounts/register.html",
+                "accounts/signup.html",
                 {"error":"This username has already been taken"}
             )
 
@@ -23,7 +23,7 @@ def signup_view(request):
         login(request, user)
         return redirect("home")
 
-    return render(request, "accounts/register.html")
+    return render(request, "accounts/signup.html")
 
 
 def login_view(request):

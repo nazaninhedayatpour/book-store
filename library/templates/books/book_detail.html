@@ -194,7 +194,7 @@
 
         {% if reviews %}
 
-            {% for review in reviews %}
+                    {% for review in reviews %}
 
                 <div class="review-card">
 
@@ -218,10 +218,28 @@
                         {{ review.created_at|date:"M d, Y" }}
                     </small>
 
+
+                    {% if user.is_authenticated and review.user == user %}
+
+                        <div style="margin-top: 15px;">
+
+                            <a href="{% url 'edit_review' review.id %}">
+                                Edit ✏️
+                            </a>
+
+                            &nbsp;
+
+                            <a href="{% url 'delete_review' review.id %}">
+                                 Delete🗑️
+                            </a>
+
+                        </div>
+
+                    {% endif %}
+
                 </div>
 
             {% endfor %}
-
         {% else %}
 
             <p class="no-reviews">

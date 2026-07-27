@@ -4,7 +4,7 @@ from .models import Author,Book,Category
 from django.db.models import Q ,Avg, Count
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Book, Favorite, Cart , CartItem
+from .models import Book, Favorite, Cart , CartItem , Review
 from .forms import ReviewForm
 
 class HomeView(TemplateView):
@@ -231,5 +231,74 @@ def add_review(request, book_id):
         {
             "form": form,
             "book": book,
+        }
+    )
+
+@login_required
+def edit_review(request, review_id):
+
+    review = get_object_or_404(
+        Review,
+        id=review_id,
+        user=request.user
+    )
+
+    if request.method == "POST":
+
+        form = ReviewForm(
+            request.POST,
+            instance=review
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect(
+                "book_detail",
+                pk=review.book.pk
+            )
+
+    else:
+
+        form = ReviewForm(
+            instance=review
+        )
+
+    return render(
+        request,
+        "books/edit_review.html",
+        {
+            "form": form,
+            "review": review,
+        }
+    )
+
+
+@login_required
+def delete_review(request, review_id):
+
+    review = get_object_or_404(
+        Review,
+        id=review_id,
+        user=request.user
+    )
+
+    book_id = review.book.pk
+
+    if request.method == "POST":
+
+        review.delete()
+
+        return redirect(
+            "book_detail",
+            pk=book_id
+        )
+
+    return render(
+        request,
+        "books/delete_review.html",
+        {
+            "review": review,
         }
     )
