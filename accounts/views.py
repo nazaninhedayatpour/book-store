@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login , authenticate , logout
 
 
-def register_view(request):
+def signup_view(request):
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]

@@ -173,6 +173,25 @@
 
         <h2>Customer Reviews</h2>
 
+                    {% if review_count > 0 %}
+
+                <p>
+                    ⭐ Average Rating:
+                    <strong>{{ average_rating|floatformat:1 }}/5</strong>
+                </p>
+
+                <p>
+                    Based on {{ review_count }} review{{ review_count|pluralize }}
+                </p>
+
+            {% else %}
+
+                <p>
+                    No ratings yet.
+                </p>
+
+            {% endif %}
+
         {% if reviews %}
 
             {% for review in reviews %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView,DetailView
 from .models import Author,Book,Category
-from django.db.models import Q
+from django.db.models import Q ,Avg, Count
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Book, Favorite, Cart , CartItem
@@ -67,9 +67,19 @@ class BookDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+         # Get all reviews
         context["reviews"] = self.object.reviews.all()
 
+            # Calculate average rating
+        context["average_rating"] = self.object.reviews.aggregate(
+            Avg("rating")
+        )["rating__avg"]
+
+        # Count reviews
+        context["review_count"] = self.object.reviews.count()
+
         return context
+
 
 @login_required
 def add_to_favorites(request, pk):
