@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Favorites</title>
+</head>
+
+<body>
+
+    <style>
+    body {
+        background-color: #f5f1e8;
+    }
+</style>
+
+    <h1>My Favorites ❤️</h1>
+    <div style="text-align: right;">
+    <a href="{% url 'home' %} ">
+    🏠 Back to Home
+    </a>
+    </div>
+
+
+    {% for favorite in favorites %}
+
+        <div>
+
+            {% if favorite.book.cover %}
+
+                <img
+                    src="{{ favorite.book.cover.url }}"
+                    alt="{{ favorite.book.title }}"
+                    width="200"
+                >
+
+            {% endif %}
+
+        <a href="{% url 'remove_from_favorites' favorite.pk %}" , style="color: red;">
+             Remove from Favorites🗑️
+        </a>
+
+
+            <h2>
+
+                <a href="{% url 'book_detail' favorite.book.pk %}", style="color: green;">
+
+                    {{ favorite.book.title }}
+
+                </a>
+
+            </h2>
+
+
+            <p>
+                Author:
+                {{ favorite.book.author.name }}
+            </p>
+
+
+            <p>
+                Price:
+                {{ favorite.book.price }}
+            </p>
+
+            <hr>
+
+        </div>
+
+
+    {% empty %}
+
+        <p>
+            You don't have any favorite books yet.
+        </p>
+
+        <a href="{% url 'book_list' %}">
+            Browse Books
+        </a>
+
+    {% endfor %}
+
+
+</body>
+
+</html>

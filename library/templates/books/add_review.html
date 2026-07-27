@@ -1,0 +1,21 @@
+<h1>
+    Review for {{ book.title }}
+</h1>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">
+        Submit Review ⭐
+    </button>
+
+</form>
+
+<br>
+
+<a href="{% url 'book_detail' book.pk %}">
+    ← Back to Book
+</a>

@@ -1,0 +1,67 @@
+<h1>My Cart 🛒</h1>
+<style>
+    body {
+        background-color: #f5f1e8;
+    }
+</style>
+
+{% for item in cart.items.all %}
+
+        <div>
+        {% if item.book.cover %}
+            <img
+                src="{{ item.book.cover.url }}"
+                alt="{{ item.book.title }}"
+                width="150"
+            >
+        {% endif %}
+
+         <a href="{% url 'remove_from_cart' item.id %}", style="color: red; font-style:initial;">
+        Remove🗑️
+    </a>
+
+
+        <h3>{{ item.book.title }}</h3>
+
+        <p>Price: ${{ item.book.price }}</p>
+
+           <p>
+            Quantity:
+
+            <a
+                href="{% url 'decrease_cart_item' item.pk %}"
+                style="color: blue;"
+            >
+                ➖
+            </a>
+
+            {{ item.quantity }}
+
+            <a
+                href="{% url 'increase_cart_item' item.pk %}"
+                style="color: green;"
+            >
+                ➕
+            </a>
+        </p>
+
+        <p>Subtotal: ${{ item.subtotal }}</p>
+
+        
+   
+
+    </div>
+
+{% empty %}
+
+    <p>Your cart is empty.</p>
+
+{% endfor %}
+
+<hr>
+
+<h2>Total: ${{ cart.total_price }}</h2>
+
+<a href="{% url 'book_list' %}", style="color:yellowgreen;">
+    ← Back to All Books
+</a>

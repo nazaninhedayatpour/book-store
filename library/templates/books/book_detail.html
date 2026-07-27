@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ book.title }}</title>
+
+    <style>
+        /* =========================
+           General Styles
+        ========================= */
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f1e8;
+            margin: 0;
+            padding: 30px;
+        }
+
+        a {
+            color: green;
+        }
+
+
+        /* =========================
+           Reviews Section
+        ========================= */
+
+        .reviews-section {
+            margin-top: 40px;
+            padding: 25px;
+            background-color: white;
+            border-radius: 10px;
+        }
+
+        .reviews-section h2 {
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .review-card {
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .review-header strong {
+            color: #333;
+            font-size: 17px;
+        }
+
+        .review-header span {
+            color: #e6a700;
+            font-weight: bold;
+        }
+
+        .review-comment {
+            color: #555;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+
+        .review-date {
+            color: #888;
+        }
+
+        .no-reviews {
+            color: #777;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <!-- =========================
+         Book Title
+    ========================= -->
+
+    <h1>{{ book.title }}</h1>
+
+
+    <!-- =========================
+         Book Cover
+    ========================= -->
+
+    <div>
+
+        {% if book.cover %}
+
+            <img
+                src="{{ book.cover.url }}"
+                alt="{{ book.title }}"
+                width="250"
+            >
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- =========================
+         Add to Cart
+    ========================= -->
+
+    {% if user.is_authenticated %}
+
+        <a href="{% url 'add_to_cart' book.id %}">
+            Add to Cart 🛒
+        </a>
+
+    {% else %}
+
+        <a href="{% url 'login' %}">
+            Login to Add to Cart
+        </a>
+
+    {% endif %}
+
+
+    <!-- =========================
+         Book Information
+    ========================= -->
+
+    <p>
+        <strong>Author:</strong>
+        {{ book.author.name }}
+    </p>
+
+    <p>
+        <strong>Category:</strong>
+        {{ book.category.name }}
+    </p>
+
+    <p>
+        <strong>Stock:</strong>
+        {{ book.stock }}
+    </p>
+
+    <p>
+        <strong>Pages:</strong>
+        {{ book.pages }}
+    </p>
+
+    <p>
+        <strong>Publication Year:</strong>
+        {{ book.publication_year }}
+    </p>
+
+    <p>
+        <strong>Description:</strong>
+        {{ book.description }}
+    </p>
+
+
+    <!-- =========================
+         Reviews Section
+    ========================= -->
+
+    <section class="reviews-section">
+
+        <h2>Customer Reviews</h2>
+
+        {% if reviews %}
+
+            {% for review in reviews %}
+
+                <div class="review-card">
+
+                    <div class="review-header">
+
+                        <strong>
+                            {{ review.user.username }}
+                        </strong>
+
+                        <span>
+                            ⭐ {{ review.rating }}/5
+                        </span>
+
+                    </div>
+
+                    <p class="review-comment">
+                        {{ review.comment }}
+                    </p>
+
+                    <small class="review-date">
+                        {{ review.created_at|date:"M d, Y" }}
+                    </small>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p class="no-reviews">
+                No reviews yet. Be the first to review this book!
+            </p>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =========================
+         Write a Review
+    ========================= -->
+
+    {% if user.is_authenticated %}
+
+        <p>
+            <a href="{% url 'add_review' book.pk %}">
+                ⭐ Write a Review
+            </a>
+        </p>
+
+    {% else %}
+
+        <p>
+            <a href="{% url 'login' %}">
+                Login to Write a Review
+            </a>
+        </p>
+
+    {% endif %}
+
+
+    <!-- =========================
+         Add to Favorites
+    ========================= -->
+
+    {% if user.is_authenticated %}
+
+        <form
+            method="post"
+            action="{% url 'add_to_favorite' book.pk %}"
+            style="margin-top: 10px;"
+        >
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                style="font-size: xx-small; padding: 5px 10px;"
+            >
+                ❤️ Add to Favorites
+            </button>
+
+        </form>
+
+    {% else %}
+
+        <p>
+            Please
+
+            <a href="{% url 'login' %}">
+                Login
+            </a>
+
+            to add this book to your favorites.
+        </p>
+
+    {% endif %}
+
+
+    <!-- =========================
+         Back to Books
+    ========================= -->
+
+    <p>
+        <a href="{% url 'book_list' %}">
+            Back to Books
+        </a>
+    </p>
+
+</body>
+
+</html>
