@@ -5,7 +5,8 @@ from django.db.models import Q ,Avg, Count
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Book, Favorite, Cart , CartItem , Review
-from .forms import ReviewForm
+from .forms import ReviewForm, BookForm
+from django.contrib.admin.views.decorators import staff_member_required
 
 class HomeView(TemplateView):
     template_name="books/home.html"
@@ -300,5 +301,85 @@ def delete_review(request, review_id):
         "books/delete_review.html",
         {
             "review": review,
+        }
+    )
+
+
+@staff_member_required
+def create_book(request):
+
+    if request.method == "POST":
+
+        form = BookForm(
+            request.POST,
+            request.FILES
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect("book_list")
+
+    else:
+
+        form = BookForm()
+
+    return render(
+        request,
+        "books/create_book.html",
+        {
+            "form": form,
+        }
+    )
+
+@staff_member_required
+def update_book(request, pk):
+
+    book = get_object_or_404(Book, pk=pk)
+
+    if request.method == "POST":
+
+        form = BookForm(
+            request.POST,
+            request.FILES,
+            instance=book
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect("book_list")
+
+    else:
+
+        form = BookForm(instance=book)
+
+    return render(
+        request,
+        "books/update_book.html",
+        {
+            "form": form,
+            "book": book,
+        }
+    )
+
+@staff_member_required
+def delete_book(request, pk):
+
+    book = get_object_or_404(Book, pk=pk)
+
+    if request.method == "POST":
+
+        book.delete()
+
+        return redirect("book_list")
+
+    return render(
+        request,
+        "books/delete_book.html",
+        {
+            "book": book,
         }
     )

@@ -11,6 +11,11 @@
     </title>
 
     <style>
+
+                main {
+            text-align: center;
+            padding: 50px;
+        }
         * {
             box-sizing: border-box;
         }
@@ -116,6 +121,13 @@
         </div>
 
     </nav>
+        
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
 
 </body>
 

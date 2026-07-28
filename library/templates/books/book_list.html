@@ -23,6 +23,19 @@
     </a>
     </div>
 
+        {% if user.is_staff %}
+
+        <div style="margin-top: 10px; text-align: right;">
+         <a href="{% url 'create_book' %}">
+              ➕ Add New Book
+         </a>
+
+
+            </div>
+
+         {% endif %}
+
+   
 
     <!-- Search + Filter + Sort -->
 
@@ -159,6 +172,24 @@
             Stock:
             {{ book.stock }}
         </p>
+
+        {% if user.is_staff %}
+
+         <div style="margin-top: 10px; text-align: right;"> 
+
+            <a href="{% url 'update_book' book.pk %}">
+            
+                ✏️ Edit
+            </a>
+            </div>
+            
+        <div style="margin-top: 10px; text-align: right;"> 
+            <a href="{% url 'delete_book' book.pk %}">
+                🗑️ Delete 
+            </a>
+         </div>
+
+    {% endif %}
 
 
         <hr>
