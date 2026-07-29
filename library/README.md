@@ -34,6 +34,9 @@ Navigate to the project directory:
 ```bash
 cd Booknest
 ```
+```bash
+git clone https://github.com/nazaninhedayatpour/book-store.git
+```
 
 Create a virtual environment:
 
