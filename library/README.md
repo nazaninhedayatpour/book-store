@@ -2,15 +2,15 @@
 
 ![Project Screenshot](screenshots/screenshot.png)
 
-# 🛒 Online Store
+#  Online Store
 
 An e-commerce website developed using **Python and Django**, designed to provide a simple and user-friendly experience for browsing and purchasing products.
 
-## 📸 Screenshot
+##  Screenshot
 
 ![Online Store Screenshot](screenshots/screenshot.png)
 
-## ✨ Features
+##  Features
 
 * Browse available products
 * View product details
